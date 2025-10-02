@@ -76,6 +76,5 @@ int main() {
     cout << "Shipping fee: RM " << fee << endl;
     cout << "Final price: RM " << finalCost << endl;
     
-
     return 0;
 }

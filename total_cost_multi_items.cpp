@@ -23,7 +23,7 @@ double shippingFee(string type) {
 
 double applyVoucher(string voucher, double itemCost) {
     VoucherCode myVoucher;
-    double discount = 0.0;
+    double discount = 0;
 
     if (voucher == myVoucher.carnival) {
         if (itemCost > 50.0) {
@@ -44,10 +44,11 @@ int main() {
     
     char choice;
     int size = 5;
-    double sum[size] ={};
+    double sumOfTransactions[size] ={};
     int counter = 0; 
-    
+    double total =0.0;
     do{
+       
         double itemCost;
         double sum = 0.0;
         cout << "Enter the price of the item: (Enter -1 to stop) " ;
@@ -75,23 +76,38 @@ int main() {
         }
     
         finalCost += fee;
-    
+        sumOfTransactions[counter] = finalCost;
+        counter++;
     
         cout << "Discount applied: RM " << discount << endl;
         cout << "Shipping fee: RM " << fee << endl;
         cout << "Final price: RM " << finalCost << endl;
+        cout << "Total cost of Transactions ";
+        
+        for(int i = 0; i < counter; i ++)
+            cout<< sumOfTransactions[i] << ",";
+        
+        cout << endl;
+         
+        
         
         cout<< "You are allowed to make up to 5 transactions "<<endl;
         cout << "do you want to make another transaction? (y/n)  ";
         cin>> choice;
         
-        counter++;
-        if ( counter == 5){
-            cout << "Number of Transactions excited the limit! ";
+       
+        if ( counter == 2){
+            cout << "Number of Transactions excited the limit! " <<endl;
             break;
         }
 
     }while (choice == 'y' || choice == 'Y');
+    
+    for (int i = 0; i < counter; i++ )
+        total += sumOfTransactions[i];
+    
+    double average = total / counter;
+    cout << "Average amount to pay for " << counter << " tranactions is " << average;  
 
     return 0;
 }

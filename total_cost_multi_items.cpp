@@ -43,8 +43,11 @@ double applyVoucher(string voucher, double itemCost) {
 int main() {
     
     char choice;
+    int size = 5;
+    double sum[size] ={};
+    int counter = 0; 
     
-    do {
+    do{
         double itemCost;
         double sum = 0.0;
         cout << "Enter the price of the item: (Enter -1 to stop) " ;
@@ -78,10 +81,18 @@ int main() {
         cout << "Shipping fee: RM " << fee << endl;
         cout << "Final price: RM " << finalCost << endl;
         
+        cout<< "You are allowed to make up to 5 transactions "<<endl;
         cout << "do you want to make another transaction? (y/n)  ";
         cin>> choice;
+        
+        counter++;
+        if ( counter == 5){
+            cout << "Number of Transactions excited the limit! ";
+            break;
+        }
 
     }while (choice == 'y' || choice == 'Y');
 
     return 0;
 }
+

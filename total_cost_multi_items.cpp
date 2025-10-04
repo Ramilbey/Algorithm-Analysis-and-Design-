@@ -42,39 +42,46 @@ double applyVoucher(string voucher, double itemCost) {
 
 int main() {
     
-    double itemCost;
-    double sum = 0.0;
+    char choice;
     
-    cout << "Enter the price of the item: (Enter -1 to stop) " ;
-    while ( true){
-        cin >> itemCost;
-        if( itemCost == -1)
-            break;
-        sum += itemCost;
-    };
+    do {
+        double itemCost;
+        double sum = 0.0;
+        cout << "Enter the price of the item: (Enter -1 to stop) " ;
+        while ( true){
+            cin >> itemCost;
+            if( itemCost == -1)
+                break;
+            sum += itemCost;
+        };
+        
+        string shippingType;
+        cout << "Enter shipping type (Saver / Standard / Courier): ";
+        cin >> shippingType;
     
-    string shippingType;
-    cout << "Enter shipping type (Saver / Standard / Courier): ";
-    cin >> shippingType;
-
-    string voucher;
-    cout << "Enter the voucher code: ";
-    cin >> voucher;
-
-    double discount = applyVoucher(voucher, sum);
-    double finalCost = sum - discount;
-
-    double fee = 0.0;
-    if (voucher != "FREESHIPPING") {
-        fee = shippingFee(shippingType);
-    }
-
-    finalCost += fee;
-
-
-    cout << "Discount applied: RM " << discount << endl;
-    cout << "Shipping fee: RM " << fee << endl;
-    cout << "Final price: RM " << finalCost << endl;
+        string voucher;
+        cout << "Enter the voucher code: ";
+        cin >> voucher;
     
+        double discount = applyVoucher(voucher, sum);
+        double finalCost = sum - discount;
+    
+        double fee = 0.0;
+        if (voucher != "FREESHIPPING") {
+            fee = shippingFee(shippingType);
+        }
+    
+        finalCost += fee;
+    
+    
+        cout << "Discount applied: RM " << discount << endl;
+        cout << "Shipping fee: RM " << fee << endl;
+        cout << "Final price: RM " << finalCost << endl;
+        
+        cout << "do you want to make another transaction? (y/n)  ";
+        cin>> choice;
+
+    }while (choice == 'y' || choice == 'Y');
+
     return 0;
 }

@@ -3,7 +3,7 @@ using namespace std;
 
 class VoucherCode {
 public: 
-    string carnival = "CARNIVAL";
+    string carnival = "0909CARNIVAL";
     string autumn = "AUTUMNISHERE";
     string freeShipping = "FREESHIPPING";
 };

@@ -2,7 +2,7 @@
 using namespace std;
 
 class VoucherCode {
-public: 
+public:
     string carnival = "0909CARNIVAL";
     string autumn = "AUTUMNISHERE";
     string freeShipping = "FREESHIPPING";
@@ -16,7 +16,7 @@ double shippingFee(string type) {
     else if (type == "Courier")
         return 10.50;
     else
-        return 0.0; 
+        return 0.0;
 }
 
 double applyVoucher(string voucher, double itemCost) {
@@ -25,101 +25,117 @@ double applyVoucher(string voucher, double itemCost) {
 
     if (voucher == myVoucher.carnival) {
         if (itemCost > 50.0) {
-            discount = itemCost * 0.05; 
+            discount = itemCost * 0.05; // 5% discount
         }
     } else if (voucher == myVoucher.autumn) {
         if (itemCost >= 150.0) {
-            discount = itemCost * 0.10; 
+            discount = 15.0; // Fixed RM15 discount
         }
     } else if (voucher == myVoucher.freeShipping) {
-        // no discount,
+        // Discount is handled in shipping section
+        discount = 0;
     }
 
     return discount;
 }
 
 double applyInsurance(double itemCost) {
-    return itemCost * 0.01;
+    return itemCost * 0.01; // 1% of item cost
 }
 
 int main() {
+    const int MAX_TRANSACTIONS = 5;
+    double sumOfTransactions[MAX_TRANSACTIONS] = {};
+    int counter = 0;
     char choice;
-    int size = 5;
-    double sumOfTransactions[size] = {};
-    int counter = 0; 
-    double total = 0.0;
+
+    cout << "=== ONLINE SHOPPING COST CALCULATOR ===" << endl;
 
     do {
         double itemCost;
         double sum = 0.0;
-        double insuranceTotal = 0.0;
-        cout << "Enter the price of the item: (Enter -1 to stop) ";
 
+        cout << "\nEnter item prices (enter -1 to stop): ";
         while (true) {
             cin >> itemCost;
             if (itemCost == -1)
                 break;
-
             sum += itemCost;
 
             if (itemCost >= 250) {
                 char insuranceAnswer;
-                cout << "Would you like to add damage protection insurance (y/n): ";
+                cout << "Would you like to add damage protection insurance (y/n)? ";
                 cin >> insuranceAnswer;
                 if (insuranceAnswer == 'y' || insuranceAnswer == 'Y') {
-                    double insurance = applyInsurance(itemCost);
-                    sum += insurance;
-                    insuranceTotal += insurance;  
+                    double insuranceCost = applyInsurance(itemCost);
+                    sum += insuranceCost;
+                    cout << "Insurance added: RM " << insuranceCost << endl;
                 }
             }
         }
+
+        double subtotal = sum;
+        cout << "\nSubtotal (before discount & shipping): RM " << subtotal << endl;
 
         string shippingType;
         cout << "Enter shipping type (Saver / Standard / Courier): ";
         cin >> shippingType;
 
         string voucher;
-        cout << "Enter the voucher code: ";
+        cout << "Enter voucher code (if any): ";
         cin >> voucher;
 
-        double discount = applyVoucher(voucher, sum);
-        double finalCost = sum - discount;
+        double discount = applyVoucher(voucher, subtotal);
 
         double fee = 0.0;
-        if (voucher != "FREESHIPPING") {
+        if (voucher == "FREESHIPPING" && subtotal >= 300.0) {
+            cout << "Free shipping applied!" << endl;
+            fee = 0.0;
+        } else {
             fee = shippingFee(shippingType);
         }
 
-        finalCost += fee;
+        double finalCost = subtotal - discount + fee;
         sumOfTransactions[counter] = finalCost;
         counter++;
 
-        cout << "Discount applied: RM " << discount << endl;
+        cout << "\n--- Transaction Summary ---" << endl;
+        cout << "Subtotal: RM " << subtotal << endl;
+        cout << "Discount: RM " << discount << endl;
         cout << "Shipping fee: RM " << fee << endl;
-        cout << "Insurance added: RM " << insuranceTotal << endl; 
-        cout << "Final price: RM " << finalCost << endl;
+        cout << "Final price to pay: RM " << finalCost << endl;
 
-        cout << "Total cost of Transactions ";
+        cout << "\nTransactions so far: ";
         for (int i = 0; i < counter; i++)
-            cout << sumOfTransactions[i] << ",";
+            cout << sumOfTransactions[i] << "  ";
         cout << endl;
 
-        cout << "You are allowed to make up to 5 transactions " << endl;
-        cout << "Do you want to make another transaction? (y/n): ";
-        cin >> choice;
-
-        if (counter == 5) {  
-            cout << "Number of Transactions exceeded the limit! " << endl;
+        if (counter == MAX_TRANSACTIONS) {
+            cout << "\nTransaction limit (5) reached!" << endl;
             break;
         }
 
+        cout << "\nDo you want to make another transaction? (y/n): ";
+        cin >> choice;
+
     } while (choice == 'y' || choice == 'Y');
 
+    // Compute average
+    double total = 0.0;
     for (int i = 0; i < counter; i++)
         total += sumOfTransactions[i];
 
     double average = total / counter;
-    cout << "Average amount to pay for " << counter << " transactions is " << average;  
+
+    cout << "\n=======================================" << endl;
+    cout << "Average total cost for " << counter << " transactions: RM " << average << endl;
+
+    cout << "Transactions below average: ";
+    for (int i = 0; i < counter; i++) {
+        if (sumOfTransactions[i] < average)
+            cout << sumOfTransactions[i] << "  ";
+    }
+    cout << "\n=======================================" << endl;
 
     return 0;
 }

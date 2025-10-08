@@ -25,14 +25,14 @@ double applyVoucher(string voucher, double itemCost) {
 
     if (voucher == myVoucher.carnival) {
         if (itemCost > 50.0) {
-            discount = itemCost * 0.05; // 5% discount
+            discount = itemCost * 0.05; 
         }
     } else if (voucher == myVoucher.autumn) {
         if (itemCost >= 150.0) {
-            discount = 15.0; // Fixed RM15 discount
+            discount = 15.0; 
         }
     } else if (voucher == myVoucher.freeShipping) {
-        // Discount is handled in shipping section
+        
         discount = 0;
     }
 
@@ -40,12 +40,12 @@ double applyVoucher(string voucher, double itemCost) {
 }
 
 double applyInsurance(double itemCost) {
-    return itemCost * 0.01; // 1% of item cost
+    return itemCost * 0.01; 
 }
 
 int main() {
-    const int MAX_TRANSACTIONS = 5;
-    double sumOfTransactions[MAX_TRANSACTIONS] = {};
+    const int max = 5;
+    double sumOfTransactions[max] = {};
     int counter = 0;
     char choice;
 
@@ -120,7 +120,6 @@ int main() {
 
     } while (choice == 'y' || choice == 'Y');
 
-    // Compute average
     double total = 0.0;
     for (int i = 0; i < counter; i++)
         total += sumOfTransactions[i];

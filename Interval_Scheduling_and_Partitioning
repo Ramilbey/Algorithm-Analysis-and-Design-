@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct box {
+    int start, finish;
+};
+
+
+int main() {
+    vector<box> interval = {{0,6},{1,4},{3,5},{3,8},{4,7},{5,9},{6,10},{8,11}};
+
+    sort(interval.begin(), interval.end(), [](auto &a, auto &b){
+        return (a.finish - a.start) < (b.finish - b.start);
+    });
+
+    vector<box> result;
+    int lastFinish = -1;
+
+    for (auto &x : interval) {
+        if (x.start >= lastFinish) {
+            result.push_back(x);
+            lastFinish = x.finish;
+        }
+    }
+
+    cout << "Selected intervals :\n";
+    for (auto &x : result)
+        cout << x.start << " " << x.finish << "\n";
+}
+
